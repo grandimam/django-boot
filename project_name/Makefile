@@ -1,12 +1,21 @@
-.PHONY: install-hooks format lint
+.PHONY: install install-hooks runserver lint format
+
+install:
+	pip install -r requirements.txt
+
 
 install-hooks:
 	pre-commit install
 
-format:
-	black .
-	isort .
+
+runserver:
+	python manage.py runserver
+
 
 lint:
 	flake8 .
-	pre-commit run --all-files
+
+
+format:
+	black .
+	isort .
