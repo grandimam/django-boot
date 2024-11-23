@@ -14,4 +14,4 @@ INSTALLED_APPS = [
 ]
 
 
-ROOT_URLCONF = '{{ project_name }}.urls'
+ROOT_URLCONF = 'config.urls'
