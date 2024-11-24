@@ -1,30 +1,20 @@
-import structlog
+from pathlib import Path
 
-structlog.configure(
-    processors=[
-        structlog.processors.JSONRenderer(),
-    ],
-    context_class=dict,
-    logger_factory=structlog.stdlib.LoggerFactory(),
-    wrapper_class=structlog.stdlib.BoundLogger,
-    cache_logger_on_first_use=True,
-)
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 ALLOWED_HOSTS = []
 
-
 INSTALLED_APPS = [
+    'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django.contrib.redirects', 
+    'django.contrib.redirects',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'cmds',
+    'internal',
     'corsheaders',
 ]
 
@@ -47,11 +37,14 @@ TEMPLATES = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.staticfiles.middleware.StaticFilesMiddleware',
-    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
 ]
