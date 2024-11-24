@@ -1,7 +1,7 @@
 import os
-import sys
-from django.core.management import call_command
 from django.conf import settings
+
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
 
@@ -22,9 +22,6 @@ from django.apps import AppConfig
 
 class {app_name.capitalize()}Config(AppConfig):
     name = '{app_name}'
-    def ready(self):
-        if self.name not in settings.INSTALLED_APPS:
-            settings.INSTALLED_APPS.append(self.name)
 """
         apps_py_path = os.path.join(app_name, 'apps.py')
         with open(apps_py_path, 'w') as f:
@@ -36,19 +33,6 @@ class {app_name.capitalize()}Config(AppConfig):
         self.stdout.write(self.style.SUCCESS(f"App '{app_name}' created and added to INSTALLED_APPS"))
 
     def _add_app_to_installed_apps(self, app_name):
-        settings_file = os.path.join(os.getcwd(), 'config', 'settings.py')
-
-        with open(settings_file, 'r') as file:
-            settings_content = file.read()
-
-        installed_apps_index = settings_content.find('INSTALLED_APPS = [')
-        installed_apps_end_index = settings_content.find(']', installed_apps_index)
-        installed_apps_block = settings_content[installed_apps_index:installed_apps_end_index + 1]
-
-        if f"'{app_name}'" not in installed_apps_block:
-            settings_content = settings_content[:installed_apps_end_index] + f"\n    '{app_name}'," + settings_content[installed_apps_end_index:]
-            
-            with open(settings_file, 'w') as file:
-                file.write(settings_content)
-
-        self.stdout.write(self.style.SUCCESS(f"Added {app_name} to INSTALLED_APPS in settings.py"))
+        if app_name.strip() not in settings.INSTALLED_APPS:
+            settings.INSTALLED_APPS.append(app_name.strip())
+            self.stdout.write(self.style.SUCCESS(f"Added {app_name} to INSTALLED_APPS in settings.py"))
